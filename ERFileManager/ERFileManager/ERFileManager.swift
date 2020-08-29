@@ -27,6 +27,25 @@ class ERFileManager: NSObject {
     
     static let sharedInstance = ERFileManager ()
     
+    func createFolder(folderName: String, directory: URL) -> Bool {
+        var isSuccess = false
+        let folderURL = directory.appendingPathComponent(folderName)
+        //print(folderURL)
+        
+        if !self.isExistDirectory(directory: folderURL.path) {
+            
+            if self.createDirectory(atPath: folderURL.path, skipBackup: true) {
+                isSuccess = true
+            }
+            else {
+                isSuccess = false
+            }
+        } else {
+            isSuccess = true
+        }
+        return isSuccess
+    }
+    
     func writeItem(directory: URL, fileName: String, fileExtension: String, filedata: Data) -> Bool {
         
         var isSuccess = false
