@@ -232,7 +232,7 @@ class ERFileManager: NSObject {
             isSuccess = true
             
         } catch {
-            print("Unable to copy file")
+            print("Error: unable to copy item: \(error)")
             isSuccess = false
         }
         return isSuccess
@@ -245,7 +245,7 @@ class ERFileManager: NSObject {
             try FileManager.default.moveItem(atPath: sourcePath, toPath: destPath)
             isSuccess = true
         } catch {
-            print("Unable to copy file")
+            print("Error: unable to move item: \(error)")
             isSuccess = false
         }
         return isSuccess
