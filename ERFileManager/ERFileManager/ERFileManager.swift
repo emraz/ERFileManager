@@ -49,7 +49,7 @@ class ERFileManager: NSObject {
     func writeItem(directory: URL, fileName: String, fileExtension: String, filedata: Data) -> Bool {
         
         var isSuccess = false
-        let fileUrl = directory.appendingPathComponent(fileName).appendingPathExtension(fileExtension)
+        let fileUrl =  fileExtension.isEmpty == true ? (directory.appendingPathComponent(fileName)):(directory.appendingPathComponent(fileName).appendingPathExtension(fileExtension))
         //print(fileUrl)
         
         if !self.isExistDirectory(directory: directory.path) {
@@ -72,6 +72,16 @@ class ERFileManager: NSObject {
         if !self.isExistDirectory(directory: destPath) {
             _ = self.createDirectory(atPath: destPath, skipBackup: true)
         }
+        else {
+            if isOverWrite {
+                if deleteItem(atPath: destPath) {
+                    print("Removed file")
+                }
+                else {
+                    print("Unable to remove file")
+                }
+            }
+        }
         
         if self.moveItem(destPath: destPath, sourcePath: sourcePath, isoverwrite: isOverWrite) {
             return true
@@ -84,6 +94,16 @@ class ERFileManager: NSObject {
         
         if !self.isExistDirectory(directory: destPath) {
             _ = self.createDirectory(atPath: destPath, skipBackup: true)
+        }
+        else {
+            if isOverWrite {
+                if deleteItem(atPath: destPath) {
+                    print("Removed file")
+                }
+                else {
+                    print("Unable to remove file")
+                }
+            }
         }
         
         if self.copyItem(destPath: destPath, sourcePath: sourcePath, isoverwrite: isOverWrite) {
@@ -131,7 +151,6 @@ class ERFileManager: NSObject {
     }
     
     func getURLFor(directoryType: FileManager.SearchPathDirectory, subDirectory: String?) -> URL? {
-        
         let documentUrl = FileManager.default.urls(for: directoryType, in: .userDomainMask).last
         return documentUrl?.appendingPathComponent(subDirectory ?? "")
     }
@@ -208,15 +227,6 @@ class ERFileManager: NSObject {
         
         var isSuccess = false
         
-        if !isoverwrite {
-            // not allowed to overwrite files - remove destination file
-            do {
-                try FileManager.default.removeItem(atPath: destPath)
-            } catch {
-            }
-        }
-        
-        
         do {
             try FileManager.default.copyItem(atPath: sourcePath, toPath: sourcePath)
             isSuccess = true
@@ -231,15 +241,6 @@ class ERFileManager: NSObject {
     private func moveItem(destPath: String, sourcePath: String, isoverwrite: Bool) -> Bool {
         var isSuccess = false
         
-        if !isoverwrite {
-            // not allowed to overwrite files - remove destination file
-            do {
-                try FileManager.default.removeItem(atPath: destPath)
-            } catch {
-                print("Unable to remove file")
-            }
-        }
-        
         do {
             try FileManager.default.moveItem(atPath: sourcePath, toPath: destPath)
             isSuccess = true
@@ -247,9 +248,7 @@ class ERFileManager: NSObject {
             print("Unable to copy file")
             isSuccess = false
         }
-        
         return isSuccess
-        
     }
     
     func deleteItem(atPath: String) -> Bool {
