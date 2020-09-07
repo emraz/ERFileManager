@@ -67,46 +67,48 @@ class ERFileManager: NSObject {
         return isSuccess
     }
     
-    func moveItem(sourcePath: String, destPath: String, isOverWrite: Bool) -> Bool {
+    func moveItem(sourcePath: String, destDirectory: URL, fileName: String, fileExtension: String, isOverWrite: Bool) -> Bool {
         
-        if !self.isExistDirectory(directory: destPath) {
-            _ = self.createDirectory(atPath: destPath, skipBackup: true)
+        let destUrl =  fileExtension.isEmpty == true ? (destDirectory.appendingPathComponent(fileName)):(destDirectory.appendingPathComponent(fileName).appendingPathExtension(fileExtension))
+        //print(destUrl)
+        
+        if !self.isExistDirectory(directory: destDirectory.path) {
+            _ = self.createDirectory(atPath: destDirectory.path, skipBackup: true)
         }
-        else {
-            if isOverWrite {
-                if deleteItem(atPath: destPath) {
-                    print("Removed file")
-                }
-                else {
-                    print("Unable to remove file")
-                }
+        else if isOverWrite {
+            if deleteItem(atPath: destUrl.path) {
+                print("Removed file")
+            }
+            else {
+                print("Unable to remove file")
             }
         }
         
-        if self.moveItem(destPath: destPath, sourcePath: sourcePath, isoverwrite: isOverWrite) {
+        if self.moveItem(destPath: destUrl.path, sourcePath: sourcePath) {
             return true
         } else {
             return false
         }
     }
     
-    func copyItem(sourcePath: String, destPath: String, isOverWrite: Bool) -> Bool {
+    func copyItem(sourcePath: String, destDirectory: URL, fileName: String, fileExtension: String, isOverWrite: Bool) -> Bool {
         
-        if !self.isExistDirectory(directory: destPath) {
-            _ = self.createDirectory(atPath: destPath, skipBackup: true)
+        let destUrl =  fileExtension.isEmpty == true ? (destDirectory.appendingPathComponent(fileName)):(destDirectory.appendingPathComponent(fileName).appendingPathExtension(fileExtension))
+        //print(destUrl)
+        
+        if !self.isExistDirectory(directory: destDirectory.path) {
+            _ = self.createDirectory(atPath: destDirectory.path, skipBackup: true)
         }
-        else {
-            if isOverWrite {
-                if deleteItem(atPath: destPath) {
-                    print("Removed file")
-                }
-                else {
-                    print("Unable to remove file")
-                }
+        else if isOverWrite {
+            if deleteItem(atPath: destUrl.path) {
+                print("Removed file")
+            }
+            else {
+                print("Unable to remove file")
             }
         }
         
-        if self.copyItem(destPath: destPath, sourcePath: sourcePath, isoverwrite: isOverWrite) {
+        if self.copyItem(destPath: destUrl.path, sourcePath: sourcePath) {
             return true
         } else {
             return false
@@ -223,7 +225,7 @@ class ERFileManager: NSObject {
         return isSuccess
     }
     
-    private func copyItem(destPath: String, sourcePath: String, isoverwrite: Bool) -> Bool {
+    private func copyItem(destPath: String, sourcePath: String) -> Bool {
         
         var isSuccess = false
         
@@ -238,7 +240,7 @@ class ERFileManager: NSObject {
         return isSuccess
     }
     
-    private func moveItem(destPath: String, sourcePath: String, isoverwrite: Bool) -> Bool {
+    private func moveItem(destPath: String, sourcePath: String) -> Bool {
         var isSuccess = false
         
         do {
@@ -276,7 +278,16 @@ class ERFileManager: NSObject {
         }
         return isSuccess;
     }
+    
+    func getURLFor(groupIdentifier groupid: String, andSubdirectory subdirectory: String) -> URL? {
+        let sharedContainerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: groupid)
+        return sharedContainerURL?.appendingPathComponent(subdirectory)
+    }
 }
+
+
+
+
 
 
 
