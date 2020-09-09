@@ -46,7 +46,7 @@ class ERFileManager: NSObject {
         return isSuccess
     }
     
-    func writeItem(directory: URL, fileName: String, fileExtension: String, filedata: Data) -> Bool {
+    func writeItem(directory: URL, fileName: String, fileExtension: String, filedata: Data, isOverWrite: Bool) -> Bool {
         
         var isSuccess = false
         let fileUrl =  fileExtension.isEmpty == true ? (directory.appendingPathComponent(fileName)):(directory.appendingPathComponent(fileName).appendingPathExtension(fileExtension))
@@ -59,7 +59,7 @@ class ERFileManager: NSObject {
                     isSuccess = true
                 }
             }
-        } else {
+        } else if isOverWrite {
             if self.writefiletopath(atPath: fileUrl, imageData: filedata) {
                 isSuccess = true
             }
