@@ -230,7 +230,7 @@ class ERFileManager: NSObject {
         var isSuccess = false
         
         do {
-            try FileManager.default.copyItem(atPath: sourcePath, toPath: sourcePath)
+            try FileManager.default.copyItem(atPath: sourcePath, toPath: destPath)
             isSuccess = true
             
         } catch {
