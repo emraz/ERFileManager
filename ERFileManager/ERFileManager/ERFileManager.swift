@@ -157,8 +157,8 @@ class ERFileManager: NSObject {
         return documentUrl?.appendingPathComponent(subDirectory ?? "")
     }
     
-    func getPathForMainBundleFileName(filename: String?) -> String? {
-        return URL(fileURLWithPath: Bundle.main.resourcePath ?? "").appendingPathComponent(filename ?? "").absoluteString
+    func getPathForMainBundleFileName(filename: String?, fileExtension: String?) -> String? {
+        return Bundle.main.path(forResource: filename, ofType: "plist")
     }
     
     func getURLForMainBundleResource(filename: String?, fileExtension: String?) -> URL? {

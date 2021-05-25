@@ -18,7 +18,7 @@ class ViewController: UIViewController {
         let data = image?.pngData()
         
         var endURL = ERFileManager.sharedInstance.getURLFor(directoryType: .documentDirectory, subDirectory: "Test/01")!
-        print(ERFileManager.sharedInstance.writeItem(directory: endURL, fileName: "test", fileExtension: FileType.PNG.rawValue, filedata: data!))
+        print(ERFileManager.sharedInstance.writeItem(directory: endURL, fileName: "test", fileExtension: FileType.PNG.rawValue, filedata: data!, isOverWrite: false))
         
         
         endURL = endURL.appendingPathComponent("test.png")
