@@ -23,6 +23,7 @@ class ViewController: UIViewController {
         
         endURL = endURL.appendingPathComponent("test.png")
         let isRename = ERFileManager.sharedInstance.renameItem(exisitngURL: endURL, newName: "hello.png")
+        print(isRename)
     }
 }
 

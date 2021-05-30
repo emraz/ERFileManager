@@ -21,6 +21,7 @@ enum FileType :String {
     case PDF = "pdf"
     case DOC = "doc"
     case DOCX = "docx"
+    case PLIST = "plist"
 }
 
 class ERFileManager: NSObject {
