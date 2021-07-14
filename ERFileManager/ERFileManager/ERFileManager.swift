@@ -197,6 +197,13 @@ class ERFileManager: NSObject {
         return files
     }
     
+    func isExistFileInThePath(filePath: String) -> Bool {
+        if isExistDirectory(directory: filePath) {
+            return true
+        }
+        return false
+    }
+    
     private func isExistDirectory(directory: String?) -> Bool {
         
         if FileManager.default.fileExists(atPath: directory ?? "") == false {
